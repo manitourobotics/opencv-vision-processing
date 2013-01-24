@@ -44,7 +44,7 @@ if __name__ == '__main__':
             if frames != 0:
                 elapsed =  time.time() - start
                 fps= frames / elapsed
-                print fps
+                print fps # Really shows loops per second, but serves as a way for me to see how well the image is being computed
 
         frames += 1
         cv2.waitKey(1)
