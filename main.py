@@ -2,11 +2,13 @@
 
 import cv2
 from processor import Processor
+import time
 
 if __name__ == '__main__':
 
-    #Debug?
+    # Flags
     debug = True
+    graphical = True
 
     # Create a processor object
     processor = Processor()
@@ -21,16 +23,28 @@ if __name__ == '__main__':
         cv2.createTrackbar("H-Max", "Processed", processor.tmax1, 255, processor.max1 )
         cv2.createTrackbar("S-Max", "Processed", processor.tmax2, 255, processor.max2 )
         cv2.createTrackbar("V-Max", "Processed", processor.tmax3, 255, processor.max3 )
+        cv2.createTrackbar("Direction From Target", "Processed", 0,  320, processor.distance)
 
     cap = cv2.VideoCapture("http://10.29.45.11/mjpg/video.mjpg")
+
+    start = time.time()
+
+    frames = 0
 
     while True:
 
         ret, img = cap.read()
 
-        img, num = processor.find_squares(img, debug = True)
+        img, num = processor.find_squares(img, debug = True, graphical = True)
 
-        cv2.imshow("Processed", img)
+        if graphical:
+            cv2.imshow("Processed", img)
 
-        cv2.waitKey(30)
-    
+        if debug:
+            if frames != 0:
+                elapsed =  time.time() - start
+                fps= frames / elapsed
+                print fps
+
+        frames += 1
+        cv2.waitKey(1)

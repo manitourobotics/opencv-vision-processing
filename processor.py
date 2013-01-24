@@ -15,8 +15,9 @@ class Processor:
     tmax1 = 101
     tmax2 = 255
     tmax3 = 255
+    distance = 0;
 
-    def  find_squares(self, img, debug = True):
+    def  find_squares(self, img, debug = True, graphical = True):
         """
         find_squares: used to find squares in an image
 
@@ -42,7 +43,7 @@ class Processor:
         thresh = cv2.inRange(hsv_img, THRESH_MIN, THRESH_MAX)
 
         # Show the threshed image
-        if debug:
+        if debug and graphical:
             cv2.imshow('thresh', thresh)
 
         # Storage for squares
@@ -55,15 +56,18 @@ class Processor:
         for contour in contours:
             contour_length = cv2.arcLength(contour, True) * 0.02
             sides = cv2.approxPolyDP(contour, contour_length, True)
+            print cv2.boundingRect(sides)
 
             if len(sides) == 4 and cv2.contourArea(sides) > 1000 and cv2.isContourConvex(sides):
                 squares.append(sides)
+
 
         # Draw all the squares
         cv2.drawContours( img, squares, -1, (0, 255, 0), 3 )
 
         # Return the image we drew on the number of squares found
         return img, len(squares)
+
 
     def min1(self, x):
         self.tmin1 = x
@@ -82,6 +86,9 @@ class Processor:
 
     def max3(self, x):
         self.tmax3 = x
+
+    def distance(self, x):
+        self.distance = 0;
 
 if __name__ == '__main__':
     processor = Processor()
