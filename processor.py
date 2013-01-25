@@ -49,6 +49,9 @@ class Processor:
         # Storage for squares
         squares = []
 
+        # Storage for all convex hull operations
+        hull = []
+
         # Get all contours
         contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -60,10 +63,12 @@ class Processor:
 
             if len(sides) == 4 and cv2.contourArea(sides) > 1000 and cv2.isContourConvex(sides):
                 squares.append(sides)
+                hull.append(cv2.convexHull(contour))
 
 
         # Draw all the squares
         cv2.drawContours( img, squares, -1, (0, 255, 0), 3 )
+        cv2.drawContours( img, hull, -1, (0, 255, 255), 3 )
 
         # Return the image we drew on the number of squares found
         return img, len(squares)
