@@ -2,6 +2,8 @@
 
 import numpy as np
 import cv2
+from contourfeatures import Contour 
+import math
 
 class Processor:
     """
@@ -9,7 +11,8 @@ class Processor:
     """
 
     tmin1 = 67
-    tmin2 = 125
+    # tmin2 = 125
+    tmin2=42 # s-min
     tmin3 = 213
 
     tmax1 = 101
@@ -52,6 +55,9 @@ class Processor:
         # Storage for all convex hull operations
         hull = []
 
+        mu = []
+        mc = []
+
         # Get all contours
         contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -65,8 +71,24 @@ class Processor:
                 squares.append(sides)
                 hull.append(cv2.convexHull(contour))
 
+                mu=cv2.moments(contour)
+                mc.append((int(mu['m10']/mu['m00']), int(mu['m01']/mu['m00'])) )
+
+
+
+
+
 
         # Draw all the squares
+        print "num of centroids: %d" % len(mc)
+        for mci in mc:
+            cv2.circle(img, mci, 5, (255, 255, 0), -1)
+            cv2.circle(img, (320/2, mci[1]), 5, (255, 255, 0), -1)
+            # xpoints = np.array([mci[0], 320/2], np.uint32)
+            # ypoints = np.array([0, 0], np.uint32)
+            # mag = cv2.magnitude(xpoints, ypoints)
+            # print "mag %r" % mag
+
         cv2.drawContours( img, squares, -1, (0, 255, 0), 3 )
         cv2.drawContours( img, hull, -1, (0, 255, 255), 3 )
 
