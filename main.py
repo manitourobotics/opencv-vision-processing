@@ -2,7 +2,8 @@
 
 import cv2
 from processor import Processor
-import time
+from processor import FPS
+from processor import VideoHandler
 
 if __name__ == '__main__':
 
@@ -23,28 +24,28 @@ if __name__ == '__main__':
         cv2.createTrackbar("H-Max", "Processed", processor.tmax1, 255, processor.max1 )
         cv2.createTrackbar("S-Max", "Processed", processor.tmax2, 255, processor.max2 )
         cv2.createTrackbar("V-Max", "Processed", processor.tmax3, 255, processor.max3 )
-        cv2.createTrackbar("Direction From Target", "Processed", 0,  320, processor.distance)
 
-    cap = cv2.VideoCapture("http://10.29.45.11/mjpg/video.mjpg")
+    # cap = cv2.VideoCapture("http://10.29.45.11/mjpg/video.mjpg")
 
-    start = time.time()
-
-    frames = 0
+    videohandler = VideoHandler() 
+    fps = FPS()
 
     while True:
 
-        ret, img = cap.read()
+        if videohandler.goalcaptureenabled:
+            goalimg = videohandler.get_goal_img()
+            processedgoalimg, goalnum = processor.find_squares(goalimg, debug = True, graphical = True)
+            if graphical:
+                cv2.imshow("Processed", processedgoalimg)
 
-        img, num = processor.find_squares(img, debug = True, graphical = True)
+        if videohandler.pyramidcaptureenabled:
+            pyramidimg = videohandler.get_pyramid_img()
+            processedpyramidimg, pyramidnum = processor.find_squares(pyramidimg, debug = True, graphical = True)
+            if graphical:
+                cv2.imshow("Processed", processedpyramid)
 
-        if graphical:
-            cv2.imshow("Processed", img)
 
         if debug:
-            if frames != 0:
-                elapsed =  time.time() - start
-                fps= frames / elapsed
-                print fps # Really shows loops per second, but serves as a way for me to see how well the image is being computed
+            print fps.determineFPS()
 
-        frames += 1
         cv2.waitKey(1)
