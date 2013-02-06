@@ -81,7 +81,7 @@ if __name__ == '__main__':
                 traceback.print_exc()
                 conn.close()
                 break
-            time.sleep(1) # Do I need a wait? -- rapid sucession of sends else
+            # time.sleep(1) # Do I need a wait? -- rapid sucession of sends else
             cv2.waitKey(1)
 
         conn.close()
