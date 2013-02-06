@@ -6,9 +6,11 @@ from contourfeatures import Contour
 import math
 import socket
 import time
+import traceback
+
 
 class TCPserver:
-    TCP_IP = '10.29.45.2'
+    TCP_IP = '' # needs to be blank to bind to any ip
     TCP_PORT = 1180
     BUFFER_SIZE = 1024
     message = ""
@@ -16,23 +18,31 @@ class TCPserver:
     tocrio = socket.socket(socket.AF_INET,  socket.SOCK_STREAM)
 
     def __init__(self):
+        self.initilize_connection()
+
+    def initilize_connection(self):
         try:
-            self.tocrio.connect( (self.TCP_IP, self.TCP_PORT) )
+            self.tocrio.bind( (self.TCP_IP, self.TCP_PORT) )
+            self.tocrio.listen(1)
+            self.connection, addr = self.tocrio.accept() # This is blocking
         except:
-           tocrio = None 
+            traceback.print_exc()
+            self.tocrio = None 
 
     def sendmessage(self, message):
         self.message = message
-        self.tocrio.send(self.message)
+        try: 
+            self.tocrio.send(self.message)
+        except:
+            self.connection.close()
+            self.initilize_connection()
+            traceback.print_exc()
 
     def recieveMessage(self):
         data = tocrio.recv(BUFFER_SIZE)
 
     def __del__(self):
-        self.tocrio.close()
-
-
-
+        self.connection.close()
 
 class FPS:
     """
@@ -51,67 +61,34 @@ class FPS:
         return self.fps
 
 
-
 class VideoHandler:
 
-    goalcapturefeed = "http://10.29.45.11/mjpg/video.mjpg"
-    pyramidcapturefeed = 0
-
-    pyramidcaptureenabled = False
-    pyramidcapturefailed = False
-
-    goalcaptureenabled = False
-    goalcapturefailed = False
+    capturefeed = ""
+    captureenabled = False
 
 
-    def __init__(self):
-        self.start_pyramid_capture()
-        self.start_goal_capture()
+    def __init__(self, capturefeed):
+        self.capturefeed = capturefeed
+        self.start_capture()
 
 
-    def start_pyramid_capture(self):
-        self.pyramidcapture = cv2.VideoCapture(self.pyramidcapturefeed)
-        if not self.pyramidcapture.isOpened():
-            self.pyramidcapturefailed = True
-            return;
 
-        self.pyramidcaptureenabled = True
+    def start_capture(self):
+        self.capture = cv2.VideoCapture(self.capturefeed)
+        if not self.capture.isOpened():
+            self.captureenabled = False
+        else: 
+            self.captureenabled = True
 
-    def start_goal_capture(self):
-        self.goalcapture = cv2.VideoCapture(self.goalcapturefeed)
-        if not self.goalcapture.isOpened():
-            self.goalcapturefailed = True
-            return;
-
-        self.goalcaptureenabled = True
-
-    def get_pyramid_img(self):
-        if not self.pyramidcaptureenabled:
-            self.start_pyramid_capture()
-
-        if self.pyramidcapturefailed:
-            return -1;
+    def get_img(self):
+        if not self.captureenabled:
+            print "retrying to capture feed"
+            self.start_capture()
 
         # Retval is useless because of bad documentation
-        retval, self.pyramidimg = self.pyramidcapture.read()
+        retval, self.img = self.capture.read()
 
-        return self.pyramidimg
-
-    def get_goal_img(self):
-        if not self.goalcaptureenabled:
-            self.start_goal_capture()
-
-        if self.goalcapturefailed:
-            return -1;
-
-        # Retval is useless because of bad documentation
-        retval, self.goalimg = self.goalcapture.read()
-
-        return self.goalimg
-
-
-
-
+        return self.img
 
 
 class Processor:
@@ -128,7 +105,11 @@ class Processor:
     tmax2 = 255
     tmax3 = 255
     distance = 0
-    datatocrio = TCPserver()
+    #datatocrio = TCPserver()
+
+    def  send_information(self):
+            if self.datatocrio.tocrio != None:
+                self.datatocrio.sendmessage("d:" + str(self.distance))
 
     def  find_squares(self, img, debug = True, graphical = True):
         """
@@ -208,9 +189,6 @@ class Processor:
                 else:
                     print "centered"
             message = "distance:%s" % str(distance)
-            if self.datatocrio.tocrio != None:
-                pass
-                # self.datatocrio.sendmessage(message)
             # xpoints = np.array([mci[0], 320/2], np.uint32)
             # ypoints = np.array([0, 0], np.uint32)
             # mag = cv2.magnitude(xpoints, ypoints)
@@ -242,9 +220,7 @@ class Processor:
     def max3(self, x):
         self.tmax3 = x
 
-    def distance(self, x):
-        self.distance = 0;
-
+# Test code
 if __name__ == '__main__':
     processor = Processor()
 
