@@ -75,9 +75,9 @@ class VideoHandler:
 
     def start_capture(self):
         self.capture = cv2.VideoCapture(self.capturefeed)
-        if not self.capture.isOpened():
+        if self.capture == None or not self.capture.isOpened():
             self.captureenabled = False
-        else: 
+        elif self.capture.isOpened(): 
             self.captureenabled = True
 
     def get_img(self):
