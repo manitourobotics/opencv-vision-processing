@@ -55,4 +55,4 @@ if __name__ == '__main__':
         if debug:
             print fps.determineFPS()
 
-        cv2.waitKey(1)
+        cv2.waitKey(30)
