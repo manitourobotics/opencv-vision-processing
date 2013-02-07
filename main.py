@@ -44,7 +44,7 @@ if __name__ == '__main__':
 
         if frisbeecamera.captureenabled:
             goalimg = frisbeecamera.get_img()
-            processedgoalimg, goalnum = processor.find_squares(goalimg, debug = True, graphical = True)
+            processedgoalimg, goalnum = processor.find_squares(goalimg, debug, graphical)
             if graphical:
                 cv2.imshow(winname, processedgoalimg)
 
