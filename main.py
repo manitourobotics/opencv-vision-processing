@@ -46,16 +46,15 @@ if __name__ == '__main__':
             goalimg = frisbeecamera.get_img()
             processedgoalimg, goalnum = processor.find_squares(goalimg, debug, graphical)
             if graphical:
-                cv2.imshow(winname, processedgoalimg)
+                cv2.imshow(goalwinname, processedgoalimg)
 
         if climbingcamera.captureenabled:
             pyramidimg = climbingcamera.get_img()
             processedpyramidimg, pyramidnum = processor.find_squares(pyramidimg, debug, graphical)
             if graphical:
-                cv2.imshow(winname, processedpyramid)
+                cv2.imshow(pyramidwinname, processedpyramidimg)
 
 
-        if debug:
-            print fps.determineFPS()
+        print fps.determineFPS()
 
         cv2.waitKey(30)
