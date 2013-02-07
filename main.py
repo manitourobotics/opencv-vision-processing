@@ -11,15 +11,18 @@ if __name__ == '__main__':
     # -- Flags --
     # Second argument is always debug, third graphical if applicable
     if len(sys.argv) == 3:
-        debug = argv[1]
-        graphical = argv[2]
+        debug = sys.argv[1]
+        graphical = sys.argv[2]
     else:
         debug = True
         graphical = True
 
 
-    winname = "Processed"
-    cv2.namedWindow(winname)
+    goalwinname = "NetCam"
+    pyramidwinname = "UsbCam"
+    if graphical:
+        cv2.namedWindow(goalwinname)
+        cv2.namedWindow(pyramidwinname)
 
     processor = Processor()
     frisbeecamera = VideoHandler("http://10.29.45.11/mjpg/video.mjpg") 
@@ -27,14 +30,14 @@ if __name__ == '__main__':
     fps = FPS()
 
     # Trackbars to find best hsv min/max values
-    if debug:
-        cv2.createTrackbar("H-Min", winname, processor.tmin1, 255, processor.min1 )
-        cv2.createTrackbar("S-Min", winname, processor.tmin2, 255, processor.min2 )
-        cv2.createTrackbar("V-Min", winname, processor.tmin3, 255, processor.min3 )
+    if debug and graphical:
+        cv2.createTrackbar("H-Min", goalwinname, processor.tmin1, 255, processor.min1 )
+        cv2.createTrackbar("S-Min", goalwinname, processor.tmin2, 255, processor.min2 )
+        cv2.createTrackbar("V-Min", goalwinname, processor.tmin3, 255, processor.min3 )
 
-        cv2.createTrackbar("H-Max", winname, processor.tmax1, 255, processor.max1 )
-        cv2.createTrackbar("S-Max", winname, processor.tmax2, 255, processor.max2 )
-        cv2.createTrackbar("V-Max", winname, processor.tmax3, 255, processor.max3 )
+        cv2.createTrackbar("H-Max", goalwinname, processor.tmax1, 255, processor.max1 )
+        cv2.createTrackbar("S-Max", goalwinname, processor.tmax2, 255, processor.max2 )
+        cv2.createTrackbar("V-Max", goalwinname, processor.tmax3, 255, processor.max3 )
 
 
     while True:
@@ -47,7 +50,7 @@ if __name__ == '__main__':
 
         if climbingcamera.captureenabled:
             pyramidimg = climbingcamera.get_img()
-            processedpyramidimg, pyramidnum = processor.find_squares(pyramidimg, debug = True, graphical = True)
+            processedpyramidimg, pyramidnum = processor.find_squares(pyramidimg, debug, graphical)
             if graphical:
                 cv2.imshow(winname, processedpyramid)
 
