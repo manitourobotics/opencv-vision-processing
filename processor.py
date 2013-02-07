@@ -107,10 +107,6 @@ class Processor:
     distance = 0
     #datatocrio = TCPserver()
 
-    def  send_information(self):
-            if self.datatocrio.tocrio != None:
-                self.datatocrio.sendmessage("d:" + str(self.distance))
-
     def  find_squares(self, img, debug = True, graphical = True):
         """
         find_squares: used to find squares in an image
