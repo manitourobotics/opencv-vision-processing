@@ -11,8 +11,15 @@ if __name__ == '__main__':
     # -- Flags --
     # Second argument is always debug, third graphical if applicable
     if len(sys.argv) == 3:
-        debug = sys.argv[1]
-        graphical = sys.argv[2]
+        if sys.argv[1] == "True":
+            debug = True
+        else: 
+            debug = False
+        if sys.argv[2] == "True":
+            graphical  = True
+        else:
+            graphical  = False
+
     else:
         debug = True
         graphical = True
