@@ -16,21 +16,24 @@ if __name__ == '__main__':
     s.listen(1) # Only l isten for one connection max
 
     while True:
-        conn, addr = s.accept() # Accept any connections. 
-        # Reaccept if connection lost
+        try:
+            conn, addr = s.accept() # Accept any connections. 
+            # Reaccept if connection lost
 
-        while True:
-            print 'Connection address:', addr
-            try:
-                # Send test data
-                conn.send("foo\n")
-                conn.send("bar\n")
-            except: 
-                # If the client closes the connection, don't quit and
-                #   look for a new one
-                traceback.print_exc()
-                conn.close()
-                break
-            time.sleep(1) # Do I need a wait? -- rapid sucession of sends else
+            while True:
+                print 'Connection address:', addr
+                try:
+                    # Send test data
+                    conn.send("foo\n")
+                    conn.send("bar\n")
+                except socket.error: 
+                    # If the client closes the connection, don't quit and
+                    #   look for a new one
+                    traceback.print_exc()
+                    conn.close()
+                    break
+                time.sleep(1) # Do I need a wait? -- rapid sucession of sends else
 
-    conn.close()
+        except KeyboardInterrupt:
+            conn.close()
+            s.shutdown(socket.SHUT_RDWR)

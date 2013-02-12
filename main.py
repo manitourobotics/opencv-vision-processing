@@ -5,6 +5,7 @@ import cv2
 from processor import Processor
 from processor import FPS
 from processor import VideoHandler
+from threadedtcpserver import ConnectionThread
 
 if __name__ == '__main__':
 
@@ -25,9 +26,9 @@ if __name__ == '__main__':
         graphical = True
 
 
-    goalwinname = "NetCam"
-    pyramidwinname = "UsbCam"
     if graphical:
+        goalwinname = "NetCam"
+        pyramidwinname = "UsbCam"
         cv2.namedWindow(goalwinname)
         cv2.namedWindow(pyramidwinname)
 
@@ -35,6 +36,8 @@ if __name__ == '__main__':
     frisbeecamera = VideoHandler("http://10.29.45.11/mjpg/video.mjpg") 
     climbingcamera = VideoHandler(0)
     fps = FPS()
+    connThread = ConnectionThread() # The tcp server is threaded
+    # becasue waiting for a connection is blocking
 
     # Trackbars to find best hsv min/max values
     if debug and graphical:
@@ -47,6 +50,8 @@ if __name__ == '__main__':
         cv2.createTrackbar("V-Max", goalwinname, processor.tmax3, 255, processor.max3 )
 
 
+
+    connThread.start()
     while True:
 
         if frisbeecamera.captureenabled:
@@ -60,6 +65,9 @@ if __name__ == '__main__':
             processedpyramidimg, pyramidnum = processor.find_squares(pyramidimg, debug, graphical)
             if graphical:
                 cv2.imshow(pyramidwinname, processedpyramidimg)
+
+        # The processor thread sets the distance; connThread reads
+        connThread.distance = processor.distance
 
 
         print fps.determineFPS()

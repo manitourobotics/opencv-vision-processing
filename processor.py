@@ -96,7 +96,7 @@ class Processor:
     Processor: Used to process images
     """
 
-    tmin1 = 67
+    tmin1 = 42
     # tmin2 = 125
     tmin2=42 # s-min
     tmin3 = 213
@@ -153,7 +153,8 @@ class Processor:
             contour_length = cv2.arcLength(contour, True) * 0.02
             sides = cv2.approxPolyDP(contour, contour_length, True)
             if debug:
-                print cv2.boundingRect(sides)
+                pass
+                #print cv2.boundingRect(sides)
 
             if len(sides) == 4 and cv2.contourArea(sides) > 1000 and cv2.isContourConvex(sides):
                 squares.append(sides)
@@ -178,12 +179,6 @@ class Processor:
             self.distance = distance
             if debug:
                 print "dist %d" % distance
-                if distance > 5: 
-                    print "left"
-                elif distance < -5:
-                    print "right"
-                else:
-                    print "centered"
             message = "distance:%s" % str(distance)
             # xpoints = np.array([mci[0], 320/2], np.uint32)
             # ypoints = np.array([0, 0], np.uint32)
