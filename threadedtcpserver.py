@@ -7,16 +7,20 @@ import threading
 class ConnectionThread( threading.Thread ):
 
 
-    distance = -1000.0
-    previous_distance = distance
+    horizontal_alignment = -1000.0
+    previous_horizontal_alignment = horizontal_alignment
 
-    DISTANCE_PACKET=1
+    HORIZONTAL_ALIGNMENT=1
+    HORIZONTAL_ALIGNMENT_=2
+    TARGET_HIGH=1
+    TARGET_MIDDLE=2
+    TARGET_LOW=3
 
     def run(self):
         
         s = socket.socket( socket.AF_INET, socket.SOCK_STREAM )
         s.bind( ('', 1180) )
-        s.listen(1)
+        s.listen(2) # I want another listener for testing
 
         while True:
             conn, addr = s.accept()
@@ -26,9 +30,15 @@ class ConnectionThread( threading.Thread ):
                 try:
 
                     # don't send duplicate information
-                    if( self.previous_distance != self.distance ):
-                        conn.send( self.DISTANCE_PACKET + str(self.distance) + "\n")
-                    previous_distance = self.distance  
+                    if( self.previous_horizontal_alignment != self.horizontal_alignment ):
+                        information = str(self.HORIZONTAL_ALIGNMENT) + ":" + str(self.horizontal_alignment) + "\n"
+                        conn.send(information)
+                        print "information sent"
+                    elif(self.previous_horizontal_alignment == self.horizontal_alignment):
+                        previous_horizontal_alignment = self.horizontal_alignment  
+                        print "duplicate information"
+                    else:
+                        print "error "
                 except socket.error:
                     print "socket err"
                     traceback.print_exc()
@@ -45,7 +55,7 @@ if __name__ == '__main__':
     i = 0
     while True:
         time.sleep(1)
-        connThread.distance = i
+        connThread.horizontal_alignment = i
         i+=1
     
 
