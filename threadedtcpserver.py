@@ -12,6 +12,7 @@ class ConnectionThread( threading.Thread ):
 
     HORIZONTAL_ALIGNMENT=1
     HORIZONTAL_ALIGNMENT_=2
+    TARGET_UNKNOWN=0
     TARGET_HIGH=1
     TARGET_MIDDLE=2
     TARGET_LOW=3
@@ -39,6 +40,7 @@ class ConnectionThread( threading.Thread ):
                         print "duplicate information"
                     else:
                         print "error "
+
                 except socket.error:
                     print "socket err"
                     traceback.print_exc()
