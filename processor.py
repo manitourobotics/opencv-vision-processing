@@ -193,6 +193,15 @@ class Processor:
         return img, len(squares)
 
 
+    def get_aspect_ratio( contour, ratio):
+        """
+        parameters: 
+            contour: a single contour
+            ratio: the desired ratio in decimal value width/hight
+        """
+        pass
+
+
     def min1(self, x):
         self.tmin1 = x
 
