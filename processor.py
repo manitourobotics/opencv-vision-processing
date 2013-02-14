@@ -99,7 +99,7 @@ class Processor:
     t_huemin = 42
     # t_saturationmin = 125
     t_saturationmin=42 # s-min
-    tmin3 = 213
+    t_valuemin = 213
 
     tmax1 = 101
     tmax2 = 255
@@ -126,7 +126,7 @@ class Processor:
         img = cv2.GaussianBlur(img, (5, 5), 0)
 
         # Create thresh values from silder
-        THRESH_MIN = np.array([self.t_huemin, self.t_saturationmin, self.tmin3], np.uint8)
+        THRESH_MIN = np.array([self.t_huemin, self.t_saturationmin, self.t_valuemin], np.uint8)
         THRESH_MAX = np.array([self.tmax1, self.tmax2, self.tmax3], np.uint8)
 
         # Convert image to hsv
@@ -209,7 +209,7 @@ class Processor:
         self.t_saturationmin = x
 
     def min3(self, x):
-        self.tmin3 = x
+        self.t_valuemin = x
 
     def max1(self, x):
         self.tmax1 = x
