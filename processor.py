@@ -102,7 +102,7 @@ class Processor:
     t_valuemin = 213
 
     t_huemax = 101
-    tmax2 = 255
+    t_saturationmax = 255
     tmax3 = 255
     distance = 0
     #datatocrio = TCPserver()
@@ -127,7 +127,7 @@ class Processor:
 
         # Create thresh values from silder
         THRESH_MIN = np.array([self.t_huemin, self.t_saturationmin, self.t_valuemin], np.uint8)
-        THRESH_MAX = np.array([self.t_huemax, self.tmax2, self.tmax3], np.uint8)
+        THRESH_MAX = np.array([self.t_huemax, self.t_saturationmax, self.tmax3], np.uint8)
 
         # Convert image to hsv
         hsv_img = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
@@ -215,7 +215,7 @@ class Processor:
         self.t_huemax = x
 
     def max2(self, x):
-        self.tmax2 = x
+        self.t_saturationmax = x
 
     def max3(self, x):
         self.tmax3 = x
