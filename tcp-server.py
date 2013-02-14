@@ -31,7 +31,7 @@ if __name__ == '__main__':
     # Trackbars to find best hsv min/max values
     if debug:
         cv2.createTrackbar("H-Min", winname, processor.t_huemin, 255, processor.huemin )
-        cv2.createTrackbar("S-Min", winname, processor.t_saturationmin, 255, processor.min2 )
+        cv2.createTrackbar("S-Min", winname, processor.t_saturationmin, 255, processor.saturationmin )
         cv2.createTrackbar("V-Min", winname, processor.tmin3, 255, processor.min3 )
 
         cv2.createTrackbar("H-Max", winname, processor.tmax1, 255, processor.max1 )
