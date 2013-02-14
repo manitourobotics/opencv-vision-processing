@@ -214,7 +214,7 @@ class Processor:
     def huemax(self, x):
         self.t_huemax = x
 
-    def max2(self, x):
+    def saturationmax(self, x):
         self.t_saturationmax = x
 
     def max3(self, x):
