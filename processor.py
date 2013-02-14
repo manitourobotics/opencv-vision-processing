@@ -119,7 +119,10 @@ class Processor:
             The number of squares found
         """
 
-        # Blur the image
+        # Averages out surrounding pixels, simplifying matching entire regions
+        # Removes noise by blurring
+        # (5, 5) indicates the guassian kernel size 5x5
+        # the third value indicateds standard deviation in the x direciton(none)
         img = cv2.GaussianBlur(img, (5, 5), 0)
 
         # Create thresh values from silder
