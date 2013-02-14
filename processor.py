@@ -202,7 +202,7 @@ class Processor:
         pass
 
 
-    def min1(self, x):
+    def huemin(self, x):
         self.t_huemin = x
 
     def min2(self, x):
