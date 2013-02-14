@@ -101,7 +101,7 @@ class Processor:
     t_saturationmin=42 # s-min
     t_valuemin = 213
 
-    tmax1 = 101
+    t_huemax = 101
     tmax2 = 255
     tmax3 = 255
     distance = 0
@@ -127,7 +127,7 @@ class Processor:
 
         # Create thresh values from silder
         THRESH_MIN = np.array([self.t_huemin, self.t_saturationmin, self.t_valuemin], np.uint8)
-        THRESH_MAX = np.array([self.tmax1, self.tmax2, self.tmax3], np.uint8)
+        THRESH_MAX = np.array([self.t_huemax, self.tmax2, self.tmax3], np.uint8)
 
         # Convert image to hsv
         hsv_img = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
@@ -212,7 +212,7 @@ class Processor:
         self.t_valuemin = x
 
     def max1(self, x):
-        self.tmax1 = x
+        self.t_huemax = x
 
     def max2(self, x):
         self.tmax2 = x
