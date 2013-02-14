@@ -211,7 +211,7 @@ class Processor:
     def min3(self, x):
         self.t_valuemin = x
 
-    def max1(self, x):
+    def huemax(self, x):
         self.t_huemax = x
 
     def max2(self, x):
