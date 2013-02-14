@@ -165,11 +165,8 @@ class Processor:
 
                 mu=cv2.moments(contour)
                 mc.append((int(mu['m10']/mu['m00']), int(mu['m01']/mu['m00'])) )
-
-
-
-
-
+                #self.bounding_box=cv2.boundingRect(cont 
+                # should I use a bounding rect or try to de-skew rectangles?
 
         # Draw all the squares
         if debug:
