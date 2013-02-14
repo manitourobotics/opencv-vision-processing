@@ -32,7 +32,7 @@ if __name__ == '__main__':
     if debug:
         cv2.createTrackbar("H-Min", winname, processor.t_huemin, 255, processor.huemin )
         cv2.createTrackbar("S-Min", winname, processor.t_saturationmin, 255, processor.saturationmin )
-        cv2.createTrackbar("V-Min", winname, processor.t_valuemin, 255, processor.min3 )
+        cv2.createTrackbar("V-Min", winname, processor.t_valuemin, 255, processor.valuemin )
 
         cv2.createTrackbar("H-Max", winname, processor.t_huemax, 255, processor.huemax )
         cv2.createTrackbar("S-Max", winname, processor.t_saturationmax, 255, processor.saturationmax )

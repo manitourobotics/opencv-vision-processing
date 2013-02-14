@@ -208,7 +208,7 @@ class Processor:
     def saturationmin(self, x):
         self.t_saturationmin = x
 
-    def min3(self, x):
+    def valuemin(self, x):
         self.t_valuemin = x
 
     def huemax(self, x):
