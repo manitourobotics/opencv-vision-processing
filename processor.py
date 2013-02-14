@@ -217,7 +217,7 @@ class Processor:
     def saturationmax(self, x):
         self.t_saturationmax = x
 
-    def max3(self, x):
+    def valuemax(self, x):
         self.t_valuemax = x
 
 # Test code

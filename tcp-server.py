@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
         cv2.createTrackbar("H-Max", winname, processor.t_huemax, 255, processor.huemax )
         cv2.createTrackbar("S-Max", winname, processor.t_saturationmax, 255, processor.saturationmax )
-        cv2.createTrackbar("V-Max", winname, processor.t_valuemax, 255, processor.max3 )
+        cv2.createTrackbar("V-Max", winname, processor.t_valuemax, 255, processor.valuemax )
 
     # Do not use bind with localhost as the address -- The port will
     #   not be opened to outside IPs
